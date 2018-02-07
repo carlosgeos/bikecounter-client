@@ -53,5 +53,8 @@ module.exports = {
       template: 'index.html',
       filename: 'index.html'
     }),
+    new webpack.DefinePlugin({
+      API_URL: JSON.stringify("http://bikecounter-env.p2knwkswfj.eu-west-1.elasticbeanstalk.com"),
+    }),
   ]
 };
