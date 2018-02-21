@@ -9,6 +9,16 @@ import flatpickr from "flatpickr";
 /* var now = new Date().toISOString();
  * var two_days_ago = new Date(new Date().getTime() - (2 * 24 * 60 * 60 * 1000)).toISOString();
  * */
+
+function generate_tooltip_title(data_point) {
+  return data_point;/* default, Date object */
+}
+
+function generate_tooltip_content(name, ratio, id, index) {
+  return name;/* default */
+}
+
+
 var chart = c3.generate({
   data: {
     x: 'Time',
@@ -20,7 +30,8 @@ var chart = c3.generate({
   },
   tooltip: {
     format: {
-      title: function(x) {return d;}
+      title: generate_tooltip_title,
+      name: generate_tooltip_content,
     }
   },
   axis: {
@@ -30,15 +41,20 @@ var chart = c3.generate({
       },
       type: 'timeseries',
       tick: {
-        format: '%e %b between %H:00 and %H:59'
+        format: '%e %b between %H:00 and %H:59',
+        count: 5,
       }
     },
     y: {
+      default: [0, 500],
+      padding: {
+        top: 25,
+        bottom: 0
+      },
       label: {
         text: "Amount"
       },
       min: 0,
-      padding: 0
     }
   },
   grid: {
