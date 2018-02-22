@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
+const WebappWebpackPlugin = require('webapp-webpack-plugin')/* favicons */
 
 module.exports = {
   entry: './scripts/index.js',
@@ -56,5 +56,6 @@ module.exports = {
     new webpack.DefinePlugin({
       API_URL: JSON.stringify("http://bikecounter-env.p2knwkswfj.eu-west-1.elasticbeanstalk.com"),
     }),
+    new WebappWebpackPlugin('./favicon.png')
   ]
 };
