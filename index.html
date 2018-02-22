@@ -15,15 +15,28 @@
          <h1 class="bg-title">Bikecounter. Rue de la Loi</h1>
       </div>
       <div class="section bar-graph">
-         <h2>Bike Flow</h2>
-         <div class="controls">
-            <input id="range_pickr" placeholder="Select a range of dates.." type="text">
+         <div class="container">
+            <h2>Bike Flow</h2>
+            <div class="controls">
+               <div class="row justify-content-md-center">
+                  <div class="col-md-6">
+                     <input id="range_pickr" placeholder="Select a range of dates.." type="text">
+                  </div>
+               </div>
+               <!-- <div class="row">
+                    <div class="col-md-6">
+                    <input id="start_time_pickr" class="time_pickr" placeholder="Start time" type="text">
+                    </div>
+                    <div class="col-md-6">
+                    <input id="end_time_pickr" class="time_pickr" placeholder="End time" type="text">
+                    </div>
+                    </div> -->
+            </div>
+            <div id="chart"></div>
          </div>
-         <div id="chart"></div>
       </div>
       <div class="footer">
          <p>Code on <a href="https://github.com/carlosgeos/bikecounter">GitHub</a> !</p>
       </div>
-      <div></div>
    </body>
 </html>

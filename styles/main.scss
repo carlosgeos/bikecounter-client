@@ -1,3 +1,6 @@
+@import "~bootstrap/scss/bootstrap-grid";
+@import "~bootstrap/scss/bootstrap-reboot";
+
 $gray-dark: #444;
 $azul-molon: #6f9ec8;
 $rosa-claro: #ffcfd5;
@@ -62,11 +65,12 @@ body {
 .controls {
     margin-bottom: 4em;
     input.flatpickr-input {
+        margin: 10px;
         padding: 8px;
-        line-height: 26px;
-        max-height: 26px;
-        width: 20em;
+        height: 3em;
+        width: 100%;
         border: 1px solid #ccc;
         border-radius: 4px;
+        text-align: center;
     }
 }

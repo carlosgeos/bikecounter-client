@@ -1,6 +1,6 @@
-require("purecss/build/pure-min.css");
 require("c3/c3.min.css");
 require("flatpickr/dist/flatpickr.css");
+var moment = require("moment-timezone");
 import css from 'Styles/main.scss';
 import d3 from 'd3';
 import c3 from 'c3';
@@ -11,7 +11,9 @@ import flatpickr from "flatpickr";
  * */
 
 function generate_tooltip_title(data_point) {
-  return data_point;/* default, Date object */
+  var title = data_point.toLocaleDateString('fr-BE') + " at ";
+  var title = title.concat(data_point.getHours() + "h-" + (data_point.getHours() + 1) + "h");
+  return title;/* default, Date object */
 }
 
 function generate_tooltip_content(name, ratio, id, index) {
@@ -36,14 +38,15 @@ var chart = c3.generate({
   },
   axis: {
     x: {
+      localtime: false,/* importante!! */
       label: {
         text: "Date/Time"
       },
       type: 'timeseries',
       tick: {
-        format: '%e %b between %H:00 and %H:59',
+        format: '%e %b at %H:00 - %H:59',
         count: 5,
-      }
+      },
     },
     y: {
       default: [0, 500],
@@ -70,6 +73,7 @@ var range_pickr = flatpickr("#range_pickr", {
   altInput: true,
   altFormat: "F j, Y",
   dateFormat: "Y-m-d",
+  weekNumbers: true,
   enable: [
     {
       from: "2017-11-04",
@@ -82,6 +86,16 @@ var range_pickr = flatpickr("#range_pickr", {
   onClose: update_timeline
 });
 
+
+/* flatpickr(".time_pickr", {
+ *   noCalendar: true,
+ *   enableTime: true,
+ *   time_24hr: true,
+ * });*/
+
+/* var start_time_pickr = flatpickr("#start_time_pickr", {});
+ * var end_time_pickr = flatpickr("#end_time_pickr", {});*/
+
 function update_timeline(selectedDates, dateStr, instace) {
   var start_time = selectedDates[0].toISOString();
   var end_time = selectedDates[1].toISOString();
@@ -89,7 +103,8 @@ function update_timeline(selectedDates, dateStr, instace) {
     return response.json();
   }).then(function(data) {
     var numbers = data.map(x => x.thishour);
-    var timeseries = data.map(x => x.ts);
+    /* by casting x.ts to a moment object, C3 gets the correct timezone info */
+    var timeseries = data.map(x => moment(x.ts));
     chart.load({
       columns: [
         ['Number of bikes'].concat(numbers),
