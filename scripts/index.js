@@ -44,7 +44,7 @@ var chart = c3.generate({
       },
       type: 'timeseries',
       tick: {
-        format: '%e %b at %H:00 - %H:59',
+        format: '%e %b at %Hh',
         count: 5,
       },
     },
