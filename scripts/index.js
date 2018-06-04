@@ -77,6 +77,10 @@ var range_pickr = flatpickr("#range_pickr", {
   enable: [
     {
       from: "2017-11-04",
+      to: "2018-04-14"
+    },
+    {
+      from: "2018-05-3",
       to: "2018-05-17"
     }
   ],
