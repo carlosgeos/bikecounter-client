@@ -77,7 +77,7 @@ var range_pickr = flatpickr("#range_pickr", {
   enable: [
     {
       from: "2017-11-04",
-      to: new Date()
+      to: "2018-05-17"
     }
   ],
   locale: {

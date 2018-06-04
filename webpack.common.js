@@ -54,7 +54,7 @@ module.exports = {
       filename: 'index.html'
     }),
     new webpack.DefinePlugin({
-      API_URL: JSON.stringify("http://bikecounter-env.p2knwkswfj.eu-west-1.elasticbeanstalk.com"),
+      API_URL: JSON.stringify("https://bikecounter-api.herokuapp.com"),
     }),
     new WebappWebpackPlugin('./favicon.png')
   ]
