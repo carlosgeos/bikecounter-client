@@ -103,9 +103,11 @@ var range_pickr = flatpickr("#range_pickr", {
 function update_timeline(selectedDates, dateStr, instace) {
   var start_time = selectedDates[0].toISOString();
   var end_time = selectedDates[1].toISOString();
+  document.getElementById("loading_text").innerHTML = "Waking up Heroku..."
   fetch(API_URL + "/api/bikes?start_time=" + start_time + "&end_time=" + end_time).then(function(response) {
     return response.json();
   }).then(function(data) {
+    document.getElementById("loading_text").innerHTML = ""
     var numbers = data.map(x => x.thishour);
     /* by casting x.ts to a moment object, C3 gets the correct timezone info */
     var timeseries = data.map(x => moment(x.ts));
