@@ -2,17 +2,12 @@ require("c3/c3.min.css");
 require("flatpickr/dist/flatpickr.css");
 var moment = require("moment-timezone");
 import css from 'Styles/main.scss';
-import d3 from 'd3';
 import c3 from 'c3';
 import flatpickr from "flatpickr";
 
-/* var now = new Date().toISOString();
- * var two_days_ago = new Date(new Date().getTime() - (2 * 24 * 60 * 60 * 1000)).toISOString();
- * */
-
 function generate_tooltip_title(data_point) {
-  var title = data_point.toLocaleDateString('fr-BE') + " at ";
-  var title = title.concat(data_point.getHours() + "h-" + (data_point.getHours() + 1) + "h");
+  let title = data_point.toLocaleDateString('fr-BE') + " at ";
+  title = title.concat(data_point.getHours() + "h-" + (data_point.getHours() + 1) + "h");
   return title;/* default, Date object */
 }
 
@@ -20,8 +15,7 @@ function generate_tooltip_content(name, ratio, id, index) {
   return name;/* default */
 }
 
-
-var chart = c3.generate({
+let chart = c3.generate({
   data: {
     x: 'Time',
     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
@@ -68,7 +62,7 @@ var chart = c3.generate({
 });
 
 
-var range_pickr = flatpickr("#range_pickr", {
+let range_pickr = flatpickr("#range_pickr", {
   mode: "range",
   altInput: true,
   altFormat: "F j, Y",
@@ -90,24 +84,18 @@ var range_pickr = flatpickr("#range_pickr", {
   onClose: update_timeline
 });
 
+range_pickr.changeMonth(2, false);
 
-/* flatpickr(".time_pickr", {
- *   noCalendar: true,
- *   enableTime: true,
- *   time_24hr: true,
- * });*/
-
-/* var start_time_pickr = flatpickr("#start_time_pickr", {});
- * var end_time_pickr = flatpickr("#end_time_pickr", {});*/
 
 function update_timeline(selectedDates, dateStr, instace) {
+  // Fetch number of bikes from API and update chart
   var start_time = selectedDates[0].toISOString();
   var end_time = selectedDates[1].toISOString();
-  document.getElementById("loading_text").innerHTML = "Waking up Heroku..."
+  document.getElementById("loading_text").innerHTML = "Waking up Heroku...";
   fetch(API_URL + "/api/bikes?start_time=" + start_time + "&end_time=" + end_time).then(function(response) {
     return response.json();
   }).then(function(data) {
-    document.getElementById("loading_text").innerHTML = ""
+    document.getElementById("loading_text").innerHTML = "";
     var numbers = data.map(x => x.thishour);
     /* by casting x.ts to a moment object, C3 gets the correct timezone info */
     var timeseries = data.map(x => moment(x.ts));

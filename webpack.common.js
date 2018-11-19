@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const WebappWebpackPlugin = require('webapp-webpack-plugin')/* favicons */
+const WebappWebpackPlugin = require('webapp-webpack-plugin');
 
 module.exports = {
   entry: './scripts/index.js',
@@ -17,8 +17,7 @@ module.exports = {
         include: [path.resolve(__dirname, "scripts")],
         loader: "babel-loader",
         options: {
-          presets: ["es2015"]
-          /* newer option -> use babel-preset-env */
+          presets: ["@babel/env"]
         }
         /* include babel-loader and preset options for ES2015 if needed ! */
       },
