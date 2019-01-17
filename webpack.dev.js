@@ -4,7 +4,11 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
-  devtool: "source-map",
+  mode: "development",
+  devServer: {
+    hot: true
+  },
+  devtool: "cheap-module-eval-source-map",
   module: {
     rules: [
       {
@@ -26,4 +30,7 @@ module.exports = merge(common, {
       }
     ]
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
 });

@@ -54,7 +54,6 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       API_URL: JSON.stringify("https://bikecounter-api.herokuapp.com"),
-    }),
-    new WebappWebpackPlugin('./favicon.png')
+    })
   ]
 };

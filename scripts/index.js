@@ -1,6 +1,6 @@
 require("c3/c3.min.css");
 require("flatpickr/dist/flatpickr.css");
-var moment = require("moment-timezone");
+import moment from 'moment-timezone';
 import css from 'Styles/main.scss';
 import c3 from 'c3';
 import flatpickr from "flatpickr";
@@ -16,6 +16,9 @@ function generate_tooltip_content(name, ratio, id, index) {
 }
 
 let chart = c3.generate({
+  size: {
+    height: 320
+  },
   data: {
     x: 'Time',
     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
@@ -44,6 +47,10 @@ let chart = c3.generate({
     },
     y: {
       default: [0, 500],
+      // tick: {
+      //   count: 10,
+      //   format: function (d) {return Math.floor(d);}
+      // },
       padding: {
         top: 25,
         bottom: 0
@@ -84,26 +91,45 @@ let range_pickr = flatpickr("#range_pickr", {
   onClose: update_timeline
 });
 
-range_pickr.changeMonth(2, false);
+let valid_start = new Date('March 1, 2018');
+let today = new Date();
+let month_difference = 0;
+if (today.getYear() === valid_start.getYear()) {
+  month_difference = today.getMonth() - valid_start.getMonth();
+} else {
+  if (today.getMonth() < valid_start.getMonth()) {
+    month_difference += 12 - valid_start.getMonth() + today.getMonth();
+  } else {
+    month_difference += today.getMonth() - valid_start.getMonth() + 12;
+  }
+  for (var i = 0; i < (today.getYear() - (today.getYear() + 1)); i++) {
+    month_difference += 12;
+  }
+}
+range_pickr.changeMonth(-month_difference, false);
 
 
 function update_timeline(selectedDates, dateStr, instace) {
   // Fetch number of bikes from API and update chart
-  var start_time = selectedDates[0].toISOString();
-  var end_time = selectedDates[1].toISOString();
-  document.getElementById("loading_text").innerHTML = "Waking up Heroku...";
-  fetch(API_URL + "/api/bikes?start_time=" + start_time + "&end_time=" + end_time).then(function(response) {
-    return response.json();
-  }).then(function(data) {
-    document.getElementById("loading_text").innerHTML = "";
-    var numbers = data.map(x => x.thishour);
-    /* by casting x.ts to a moment object, C3 gets the correct timezone info */
-    var timeseries = data.map(x => moment(x.ts));
-    chart.load({
-      columns: [
-        ['Number of bikes'].concat(numbers),
-        ['Time'].concat(timeseries)
-      ]
+  if (selectedDates.length) {
+    let start_time = selectedDates[0].toISOString();
+    let end_time = selectedDates[1].toISOString();
+
+    document.getElementById("loading_text").innerHTML = "Waking up Heroku...";
+    fetch(API_URL + "/api/bikes?start_time=" + start_time + "&end_time=" + end_time).then(function(response) {
+      return response.json();
+    }).then(function(data) {
+      document.getElementById("loading_text").innerHTML = "";
+      let numbers = data.map(x => x.thishour);
+      /* by casting x.ts to a moment object, C3 gets the correct
+       * timezone info */
+      let timeseries = data.map(x => moment(x.ts));
+      chart.load({
+        columns: [
+          ['Time'].concat(timeseries),
+          ['Number of bikes'].concat(numbers)
+        ]
+      });
     });
-  });
+  }
 }
